@@ -71,7 +71,7 @@ jobs:
         if git status --porcelain | grep .; then
           git add .
           git commit -am "update $(date '+%Y-%m-%d %H:%M:%S')"
-          git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/zuoweiid/openwrt-packages.git" HEAD:${{matrix.target}} 
+          git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/zuoweiid/luci-app.git" HEAD:${{matrix.target}}     ## 上传仓库的地址
         else
           echo "nothing to commit"
           exit 0
