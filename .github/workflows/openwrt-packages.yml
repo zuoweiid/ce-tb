@@ -40,6 +40,13 @@ jobs:
         git config --global user.name "actions-user"                               ## 名称
         sudo timedatectl set-timezone "Asia/Shanghai"
         
+        
+    - name: SSH链接（到此预计10分钟）             ## SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        
     - name: 克隆软件包                   ## Clone packages
       run: |
         pwd && ls
@@ -48,7 +55,7 @@ jobs:
         chmod +x .github/diy/${{matrix.target}}.sh      ## 给与workflows目录内脚本  可执行的权限
         git clone -b master https://github.com/kenzok8/openwrt-packages.git ${{matrix.target}}     ## 克隆到master目录内
         cd ${{matrix.target}}                                                                      ## 进入master目录内
-        git rm -r --cache * >/dev/null 2>&1 &
+        git rm -r --cache * >/dev/null 2>&1 &                                                      ## git 把文件从暂存区域移除
         rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
         $GITHUB_WORKSPACE/.github/diy/${{matrix.target}}.sh                                     ## 执行master.sh
         bash /$GITHUB_WORKSPACE/.github/diy/convert_translation.sh                      ## 执行convert_translation.sh
